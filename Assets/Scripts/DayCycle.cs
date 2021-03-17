@@ -16,7 +16,8 @@ public class DayCycle : MonoBehaviour
     float lastTimeSeconds;
     int maxTime = 1440;
     [SerializeField]
-    float dayLengthInMinutes=15;
+    float dayLengthInMinutes = 15;
+    float currentDayLengthInMinutes;
     [Header("Light")]
     [SerializeField]
     float dayLight = 0.85f;
@@ -25,6 +26,7 @@ public class DayCycle : MonoBehaviour
     [SerializeField]
     int sunDownTime = 22*60;
     bool changingLight;
+    bool paused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,26 @@ public class DayCycle : MonoBehaviour
         beginingTimeSeconds = Time.time;
         seconds = beginingTimeSeconds;
         light.intensity = 0.7f;
+        currentDayLengthInMinutes = dayLengthInMinutes;
+    }
+
+    public void ChangeSpeed(int multipleier)
+    {
+        if (multipleier == 0) paused = true;
+        else
+        {
+            paused = false;
+            currentDayLengthInMinutes = dayLengthInMinutes / multipleier;
+        }
+    }
+
+    public void SkipTime(int timeToPass)
+    {
+        time += timeToPass;
+        while(time>=1440)
+        {
+            time -= 1440;
+        }
     }
 
 
@@ -41,7 +63,7 @@ public class DayCycle : MonoBehaviour
     void Update()
     {
         seconds = Time.time - lastTimeSeconds;
-        if (seconds - beginingTimeSeconds > dayLengthInMinutes/24)
+        if (seconds - beginingTimeSeconds > currentDayLengthInMinutes / 24 && !paused)
         {
             time++;
             timerText.text = (time / 60).ToString("D2") + " : " + (time % 60).ToString("D2");
@@ -65,7 +87,7 @@ public class DayCycle : MonoBehaviour
         if(!changingLight)
         {
             float startLight = light.intensity;
-            float changeTimeInSeconds = changeTime * dayLengthInMinutes / 24;
+            float changeTimeInSeconds = changeTime * currentDayLengthInMinutes / 24;
             StartCoroutine(ChangeLightCO(startLight, lightChange, changeTimeInSeconds));
         }
     }
