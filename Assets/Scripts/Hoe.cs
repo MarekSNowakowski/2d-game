@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Hoe : MonoBehaviour
 {
     public bool hoeSelected = true;
     [SerializeField]
-    CircleCollider2D[] interactCollider;
+    CircleCollider2D interactCollider;
     [SerializeField]
     ContactFilter2D contactFilter;
     Animator animator;
     PlayerMovement playerMovement;
     bool hoeing;
+    [SerializeField]
+    Tilemap soilTileMap;
+    [SerializeField]
+    TileBase soilTile;
 
     private void Start()
     {
@@ -26,55 +31,15 @@ public class Hoe : MonoBehaviour
             if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("interact"))
             {
                 Collider2D[] colliders = new Collider2D[1];
-                int number = interactCollider[4].OverlapCollider(contactFilter, colliders);
+                int number = interactCollider.OverlapCollider(contactFilter, colliders);
                 if(number > 0)
                 {
                     TiledSoil soil = colliders[0].GetComponent<TiledSoil>();
                     soil.ChangeToSoil();
-                    RoundTiles(soil);
+                    Vector3Int currentCell = soilTileMap.WorldToCell(interactCollider.transform.position);
+                    soilTileMap.SetTile(currentCell, soilTile);
                     StartCoroutine(HoeAnimCoroutine());
                 }
-            }
-        }
-    }
-
-    void RoundTiles(TiledSoil soil4)
-    {
-        //Check the array
-        Collider2D[] colliders = new Collider2D[1];
-        TiledSoil[] soilArray = new TiledSoil[9];
-        bool[] soilArrayMap = new bool[9];
-        for (int i = 0; i < 9; i++)
-        {
-            if (i == 4)
-            {
-                soilArray[4] = soil4;
-                soilArrayMap[4] = true;
-            }
-            else if (interactCollider[i].OverlapCollider(contactFilter, colliders) > 0)
-            {
-                if(colliders[0].GetComponent<TiledSoil>().IsSoil())
-                {
-                    soilArray[i] = colliders[0].GetComponent<TiledSoil>();
-                    soilArrayMap[i] = true;
-                }
-                else
-                {
-                    soilArrayMap[i] = false;
-                }
-            }
-            else
-            {
-                soilArray[i] = null;
-                soilArrayMap[i] = false;
-            }
-        }
-
-        for (int i = 0; i < 9; i++)
-        {
-            if(soilArrayMap[i])
-            {
-                soilArray[i].Round();
             }
         }
     }
