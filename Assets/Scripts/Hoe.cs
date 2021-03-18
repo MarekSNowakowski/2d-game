@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Hoe : MonoBehaviour
+public class Hoe : Item
 {
     public bool hoeSelected = true;
     [SerializeField]
@@ -28,13 +28,14 @@ public class Hoe : MonoBehaviour
     {
         if (hoeSelected && !hoeing)
         {
-            if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("interact"))
+            if (Input.GetButtonDown("interact"))
             {
                 Collider2D[] colliders = new Collider2D[1];
                 int number = interactCollider.OverlapCollider(contactFilter, colliders);
                 if(number > 0)
                 {
                     TiledSoil soil = colliders[0].GetComponent<TiledSoil>();
+                    soil.enabled = true;
                     soil.ChangeToSoil();
                     Vector3Int currentCell = soilTileMap.WorldToCell(interactCollider.transform.position);
                     soilTileMap.SetTile(currentCell, soilTile);
