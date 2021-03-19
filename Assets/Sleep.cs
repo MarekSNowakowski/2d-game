@@ -7,35 +7,28 @@ public class Sleep : MonoBehaviour
     [SerializeField]
     PlayerMovement playerMovement;
     [SerializeField]
-    DayCycle dayCycle;
+    DayNightController dayCycle;
     [SerializeField]
     Slider sleepSlider;
-    int sleepLevel;
-    int maxSleepLevel = 480;
+    [SerializeField]
+    float maxTimeWithNoSleep;
+    float lastSleepTime;
 
     public void StartSleep(int time)
     {
-        if(sleepLevel < maxSleepLevel/3)
+        if(Time.time - lastSleepTime > maxTimeWithNoSleep *2/3)
         {
             StartCoroutine(FadeInAndOut(time));
-            sleepLevel += time;
-            if (sleepLevel > maxSleepLevel) sleepLevel = maxSleepLevel;
-            sleepSlider.value = sleepLevel;
+            lastSleepTime = Time.time;
+            sleepSlider.value = lastSleepTime - Time.time;
         }
     }
 
     private void Start()
     {
-        sleepLevel = 360;
-        sleepSlider.maxValue = maxSleepLevel;
-        sleepSlider.value = sleepLevel;
-    }
-
-    public void LowerSleepLevel()
-    {
-        sleepLevel--;
-        if (sleepLevel <= 0) StartSleep(240);
-        sleepSlider.value = sleepLevel;
+        lastSleepTime = Time.time - 0.1f * maxTimeWithNoSleep; ;
+        sleepSlider.maxValue = maxTimeWithNoSleep;
+        sleepSlider.value = Time.time - lastSleepTime;
     }
 
     IEnumerator FadeInAndOut(int time)
@@ -50,6 +43,10 @@ public class Sleep : MonoBehaviour
 
     public void Update()
     {
-        
+        sleepSlider.value = Time.time - lastSleepTime;
+        if (Time.time - lastSleepTime > maxTimeWithNoSleep)
+        {
+            StartSleep(4);
+        }
     }
 }

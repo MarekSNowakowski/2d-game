@@ -76,7 +76,7 @@ public class DayCycle : MonoBehaviour
             time++;
             timerText.text = (time / 60).ToString("D2") + " : " + (time % 60).ToString("D2");
             lastTimeSeconds = Time.time;
-            if (time % 2 == 0) sleep.LowerSleepLevel();
+            //if (time % 2 == 0) sleep.LowerSleepLevel();
         }
         if(time==1440)
         {

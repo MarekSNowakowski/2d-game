@@ -9,7 +9,7 @@ public class Bed : MonoBehaviour
         if (collision.tag == "Player")
         {
             Sleep sleep = collision.GetComponent<Sleep>();
-            sleep.StartSleep(360);
+            sleep.StartSleep(4);
         }
     }
 }

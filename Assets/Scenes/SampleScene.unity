@@ -3316,7 +3316,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 12h
+  m_text: 6h
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3444,7 +3444,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 720
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -9252,7 +9252,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 6h
+  m_text: 2h
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9380,7 +9380,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 360
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -11531,7 +11531,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 24h
+  m_text: 12h
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11659,7 +11659,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1440
+          m_IntArgument: 12
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -16466,7 +16466,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984861971}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -16475,7 +16475,7 @@ RectTransform:
   - {fileID: 2118267066}
   m_Father: {fileID: 1413754419}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.0203125, y: 0.7287037}
   m_AnchorMax: {x: 0.10364583, y: 0.74722224}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -19253,7 +19253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95bfe7ccfb2c7e247b94f77e76cc4cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayCycle: {fileID: 1963229190}
+  dayNightController: {fileID: 1963229191}
   playStopButton: {fileID: 248274587}
 --- !u!1 &1255247268 stripped
 GameObject:
@@ -22641,8 +22641,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 1555411125}
-  dayCycle: {fileID: 1963229190}
+  dayCycle: {fileID: 1963229191}
   sleepSlider: {fileID: 984861973}
+  maxTimeWithNoSleep: 960
 --- !u!61 &1555411129
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -26871,7 +26872,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1963229189}
   - component: {fileID: 1963229188}
-  - component: {fileID: 1963229190}
+  - component: {fileID: 1963229191}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -26955,7 +26956,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1963229190
+--- !u!114 &1963229191
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -26964,15 +26965,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1963229187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46f6f34234b503d4cbbd5806d4296f19, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e0932e1e73f26f49a364814ea070a25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerText: {fileID: 1379293138}
-  dayLengthInMinutes: 15
-  sleep: {fileID: 1555411128}
-  dayLight: 0.85
-  sunUpTime: 300
-  sunDownTime: 1320
+  dayCycleLength: 720
+  currentCycleTime: 0
+  currentPhase: 0
+  hoursPerDay: 24
+  dawnTimeOffset: 3
+  worldTimeHour: 0
+  fullLight: {r: 0.99215686, g: 0.972549, b: 0.8745098, a: 1}
+  fullDark: {r: 0.1254902, g: 0.10980392, b: 0.18039216, a: 1}
+  dawnDuskFog: {r: 0.52156866, g: 0.4862745, b: 0.4, a: 1}
+  dayFog: {r: 0.7058824, g: 0.8156863, b: 0.81960785, a: 1}
+  nightFog: {r: 0.047058824, g: 0.05882353, b: 0.35686275, a: 1}
+  light: {fileID: 1963229188}
+  timer: {fileID: 1379293138}
 --- !u!1001 &1963936962
 PrefabInstance:
   m_ObjectHideFlags: 0

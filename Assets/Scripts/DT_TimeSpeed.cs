@@ -5,7 +5,7 @@ using UnityEngine;
 public class DT_TimeSpeed : MonoBehaviour
 {
     [SerializeField]
-    DayCycle dayCycle;
+    DayNightController dayNightController;
     bool playing = true;
     [SerializeField]
     TMPro.TextMeshProUGUI playStopButton;
@@ -14,13 +14,13 @@ public class DT_TimeSpeed : MonoBehaviour
     {
         if(playing)
         {
-            dayCycle.ChangeSpeed(0);
+            dayNightController.ChangeSpeed(0);
             playing = false;
             playStopButton.text = ">";
         }
         else
         {
-            dayCycle.ChangeSpeed(1);
+            dayNightController.ChangeSpeed(1);
             playing = true;
             playStopButton.text = "II";
         }
@@ -28,7 +28,7 @@ public class DT_TimeSpeed : MonoBehaviour
 
     public void SpeedUp(int multiplier)
     {
-        dayCycle.ChangeSpeed(multiplier);
+        dayNightController.ChangeSpeed(multiplier);
         if(!playing)
         {
             playStopButton.text = "II";
@@ -38,6 +38,6 @@ public class DT_TimeSpeed : MonoBehaviour
 
     public void SkipTime(int timeToSkip)
     {
-        dayCycle.SkipTime(timeToSkip);
+        dayNightController.SkipTime(timeToSkip);
     }
 }
