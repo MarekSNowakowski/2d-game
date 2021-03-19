@@ -18,6 +18,8 @@ public class DayCycle : MonoBehaviour
     [SerializeField]
     float dayLengthInMinutes = 15;
     float currentDayLengthInMinutes;
+    [SerializeField]
+    Sleep sleep;
     [Header("Light")]
     [SerializeField]
     float dayLight = 0.85f;
@@ -56,6 +58,12 @@ public class DayCycle : MonoBehaviour
         {
             time -= 1440;
         }
+        if (time > sunDownTime - 120 && time < 1440 || time > 0 && time < 200) light.intensity = 0;
+        else if (time > 200 && time < sunUpTime - 120) light.intensity = 0.35f;
+        else if (time > sunUpTime - 120 && time < 11*60) light.intensity = 0.7f;
+        else if (time > 11*60 && time < 15*60) light.intensity = dayLight;
+        else if (time > 15*60 && time < 18*60) light.intensity = 0.7f;
+        else if (time > 18 * 60 && time < sunDownTime-120) light.intensity = 0.4f;
     }
 
 
@@ -68,6 +76,7 @@ public class DayCycle : MonoBehaviour
             time++;
             timerText.text = (time / 60).ToString("D2") + " : " + (time % 60).ToString("D2");
             lastTimeSeconds = Time.time;
+            if (time % 2 == 0) sleep.LowerSleepLevel();
         }
         if(time==1440)
         {
