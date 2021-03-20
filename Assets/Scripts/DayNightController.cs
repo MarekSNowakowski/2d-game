@@ -112,6 +112,7 @@ public class DayNightController : MonoBehaviour
         nightTime = duskTime + quarterDay;
         if (light != null)
         { lightIntensity = light.intensity; }
+        SkipTime(2);
     }
 
     /// <summary>
