@@ -23,12 +23,20 @@ public class ItemUseManager : MonoBehaviour
     Tilemap soilTileMap;
     [SerializeField]
     TileBase soilTile;
+    [SerializeField]
+    Tilemap wateredSoilTileMap;
+    [SerializeField]
+    TileBase wateredTile;
 
     public void OnsignalRaised(string itemCode)
     {
-        if(itemCode == "hoe")
+        if (itemCode == "hoe")
         {
             Hoe();
+        }
+        else if (itemCode == "waterCan")
+        {
+            WateringCan();
         }
         else
         {
@@ -44,7 +52,7 @@ public class ItemUseManager : MonoBehaviour
 
     private void OnEnable()
     {
-        foreach(ItemUseSignal itemUseSignal in signals)
+        foreach (ItemUseSignal itemUseSignal in signals)
             itemUseSignal.RegisterListener(this);
     }
 
@@ -67,10 +75,34 @@ public class ItemUseManager : MonoBehaviour
             {
                 TiledSoil soil = colliders[0].GetComponent<TiledSoil>();
                 soil.enabled = true;
-                soil.ChangeToSoil();
-                Vector3Int currentCell = soilTileMap.WorldToCell(interactCollider.transform.position);
-                soilTileMap.SetTile(currentCell, soilTile);
-                StartCoroutine(HoeAnimCoroutine());
+                if (!soil.IsSoil())
+                {
+                    soil.ChangeToSoil();
+                    Vector3Int currentCell = soilTileMap.WorldToCell(interactCollider.transform.position);
+                    soilTileMap.SetTile(currentCell, soilTile);
+                    StartCoroutine(HoeAnimCoroutine());
+                }
+            }
+        }
+    }
+
+    void WateringCan()
+    {
+        if (!busy)
+        {
+            Collider2D[] colliders = new Collider2D[1];
+            int number = interactCollider.OverlapCollider(soilContactFilter, colliders);
+            if (number > 0)
+            {
+                TiledSoil soil = colliders[0].GetComponent<TiledSoil>();
+                soil.enabled = true;
+                if(soil.IsSoil())
+                {
+                    Vector3Int currentCell = wateredSoilTileMap.WorldToCell(interactCollider.transform.position);
+                    soil.Water(wateredSoilTileMap, currentCell);
+                    wateredSoilTileMap.SetTile(currentCell, wateredTile);
+                    StartCoroutine(WateringAnimCoroutine());
+                }
             }
         }
     }
@@ -83,6 +115,17 @@ public class ItemUseManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         playerMovement.ImpareMovement(false);
         animator.SetBool("Hoeing", false);
+        busy = false;
+    }
+
+    IEnumerator WateringAnimCoroutine()
+    {
+        busy = true;
+        animator.SetBool("Watering", true);
+        playerMovement.ImpareMovement(true);
+        yield return new WaitForSeconds(0.3f);
+        playerMovement.ImpareMovement(false);
+        animator.SetBool("Watering", false);
         busy = false;
     }
 

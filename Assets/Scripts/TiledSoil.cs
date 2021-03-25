@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class TiledSoil : MonoBehaviour
 {
@@ -11,9 +12,11 @@ public class TiledSoil : MonoBehaviour
     Plant plant;
     int growthTime;
     int currentStage;
-    float lastTime;
+    float time;
     float plantTime;
     int maxStage;
+    float wateredTime = 30f;
+    bool watered = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +33,19 @@ public class TiledSoil : MonoBehaviour
     public bool IsSoil()
     {
         return isSoil;
+    }
+
+    public void Water(Tilemap wateredSoilTileMap, Vector3Int currentCell)
+    {
+        StartCoroutine(wateredCO(wateredSoilTileMap, currentCell));
+    }
+
+    IEnumerator wateredCO(Tilemap wateredSoilTileMap, Vector3Int currentCell)
+    {
+        watered = true;
+        yield return new WaitForSeconds(wateredTime);
+        watered = false;
+        wateredSoilTileMap.SetTile(currentCell, null);
     }
 
     public void Plant(Plant plant)
@@ -57,12 +73,13 @@ public class TiledSoil : MonoBehaviour
 
     public void Update()
     {
-        if(plant!=null && currentStage < maxStage - 1)
+        if(plant!=null && watered && currentStage < maxStage - 1)
         {
-            lastTime = Time.time;
-            if (growthTime < lastTime - plantTime)
+            time += Time.deltaTime;
+            if (growthTime < time)
             {
                 GrowUp();
+                time = 0;
             }
         }
     }
