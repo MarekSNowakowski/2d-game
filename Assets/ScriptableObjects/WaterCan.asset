@@ -17,3 +17,4 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: 6e5af4dee59b5a144bde83bbca22eb14, type: 3}
   usable: 1
   itemUseSignal: {fileID: 11400000, guid: 05bc0bc4ec7363c4bbb99e9226ce2768, type: 2}
+  itemUseType: 0

@@ -16,6 +16,8 @@ public class Item : ScriptableObject
     protected bool usable;
     [SerializeField]
     protected ItemUseSignal itemUseSignal;
+    [SerializeField]
+    ItemUseType itemUseType;
 
     public virtual void Use()
     {
@@ -41,4 +43,15 @@ public class Item : ScriptableObject
     {
         return usable;
     }
+
+    public ItemUseType GetItemUseType()
+    {
+        return itemUseType;
+    }
+}
+
+public enum ItemUseType
+{
+    tool,
+    singleUse
 }

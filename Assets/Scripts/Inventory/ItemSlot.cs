@@ -9,7 +9,11 @@ public class ItemSlot : MonoBehaviour
     Image selectImage;
     [SerializeField]
     Image itemImage;
+    [SerializeField]
+    TMPro.TextMeshProUGUI quantityText;
     bool usable = false;
+    float quantity = 1;
+
 
     public bool Select()
     {
@@ -24,18 +28,40 @@ public class ItemSlot : MonoBehaviour
 
     public void UseItem()
     {
-        item.Use();
+        if(item!=null && usable)
+        {
+            if (item.GetItemUseType() == ItemUseType.singleUse)
+            {
+                quantity -= 1;
+            }
+            item.Use();
+            if (quantity <= 0) DestroyItem();
+        }
+    }
+
+    void DestroyItem()
+    {
+        item = null;
+        usable = false;
+        quantityText.enabled = false;
+        itemImage.sprite = null;
+        itemImage.enabled = false;
     }
 
     private void Start()
     {
-        if(item!=null)
+        if (item != null)
         {
             usable = item.IsUsable();
-            if(item.GetItemSprite()!=null)
+            if (item.GetItemSprite() != null)
             {
                 itemImage.enabled = true;
                 itemImage.sprite = item.GetItemSprite();
+            }
+            if (item.GetItemUseType() == ItemUseType.singleUse)
+            {
+                quantityText.enabled = true;
+                quantityText.text = quantity.ToString();
             }
         }
     }
