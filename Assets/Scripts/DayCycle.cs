@@ -112,4 +112,14 @@ public class DayCycle : MonoBehaviour
         light.intensity = lightChange;
         changingLight = false;
     }
+
+    public int GetTime()
+    {
+        return time;
+    }
+
+    public void SetTime(int newTime)
+    {
+        time = newTime;
+    }
 }

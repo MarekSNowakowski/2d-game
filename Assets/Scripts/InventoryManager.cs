@@ -60,7 +60,7 @@ public class InventoryManager : MonoBehaviour
         }
         if (Mathf.Abs(Input.mouseScrollDelta.y) > 0.1)
         {
-            Debug.Log(Input.mouseScrollDelta.y);
+
         }
         if (Input.GetButtonDown("interact"))
         {

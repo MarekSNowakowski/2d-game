@@ -131,7 +131,7 @@ public class DayNightController : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         Initialize();
     }
@@ -297,5 +297,17 @@ public class DayNightController : MonoBehaviour
     public void SkipTime(int timeToPass)
     {
         currentCycleTime += timeToPass / hoursPerDay * dayCycleLength;
+    }
+
+    public void SetTime(float newTime)
+    {
+        currentCycleTime = newTime;
+        Debug.Log(currentCycleTime);
+    }
+
+    public float GetTime()
+    {
+        Debug.Log(dayTime);
+        return currentCycleTime;
     }
 }
